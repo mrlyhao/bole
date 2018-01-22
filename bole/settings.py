@@ -68,7 +68,7 @@ ITEM_PIPELINES = {
     # 'bole.pipelines.JsonExporterPipleline': 2,
     # # 'scrapy.pipelines.images.ImagesPipeline':2,
     # 'bole.pipelines.BoleImagePipeline': 1,
-    'bole.pipelines.MysqlPipeline': 1,
+    'bole.pipelines.MysqlTwistedPipline': 1,
 }
 IMAGES_URLS_FIELD= 'front_image_url'
 project_dir = os.path.abspath(os.path.dirname(__file__))
@@ -96,4 +96,4 @@ IMAGES_STORE = os.path.join(project_dir,'images')
 MYSQL_HOST = "localhost"
 MYSQL_DBNAME= 'lyh'
 MYSQL_USER = 'root'
-MYSQL_PASSWORD = 'liyuanhao9286A'
+MYSQL_PASSWD = 'liyuanhao9286A'

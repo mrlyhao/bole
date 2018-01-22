@@ -1,5 +1,6 @@
 import hashlib
 def get_md5(url):
+    # 给url返回一个MD5用于判断是否重复
     if isinstance(url,str):
         url = url.encode('utf-8')
     m = hashlib.md5()
