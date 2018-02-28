@@ -7,14 +7,40 @@ from bole.items import JobBoleArticleItem,ArticleItemLoader
 from bole.utils.commmon import get_md5
 from scrapy.loader import ItemLoader
 import datetime
+from selenium import webdriver
+from scrapy.xlib.pydispatch import dispatcher
+from scrapy import signals
+import time
 
 
 class CommentSpider(scrapy.Spider):
     name = 'comment'
     allowed_domains = ['blog.jobbole.com']
     start_urls = ['http://blog.jobbole.com/all-posts/']
+        # def __init__(self):
+    #     self.browser = webdriver.Chrome(executable_path='C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe')
+    #     super(CommentSpider,self).__init__()
+    #     dispatcher.connect(self.spider_closed,signals.spider_closed)
+    #
+    # def spider_closed(self,spider):
+    #     # 当爬虫退出的时候关闭chrome
+    #     print('Spider closed')
+    #     self.browser.quit()
+    # 收集伯乐在线所有404的url及404页面数
+    handle_httpstatus_list = [404]
+
+    def __init__(self, **kwargs):
+        self.fail_url  = []
+        dispatcher.connect(self.handle_spider_closed, signals.spider_closed)
+
+    def handle_spider_closed(self,spider,reason):
+        self.crawler.stats.set_value('failed_urls',','.join(self.fail_url))
+        pass
 
     def parse(self, response):
+        if response.status == 404:
+            self.fail_url.append(response.url)
+            self.crawler.stats.inc_value("failed_url")
         post_urls = response.css('.post.floated-thumb .post-thumb a:nth-child(1)')
         for post_url in post_urls:
             url = post_url.css('::attr(href)').extract_first('')
