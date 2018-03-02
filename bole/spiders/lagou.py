@@ -11,8 +11,8 @@ class LagouSpider(CrawlSpider):
     allowed_domains = ['www.lagou.com']
     start_urls = ['https://www.lagou.com']
     custom_settings = {
-        "COOKIES_ENABLED": False,
-        "DOWNLOAD_DELAY": 0.01,
+        "COOKIES_ENABLED": False,#不发送cookies
+        "DOWNLOAD_DELAY": 0.01,#下载等待时间
         'DEFAULT_REQUEST_HEADERS': {
             'Accept': 'application/json, text/javascript, */*; q=0.01',
             'Accept-Encoding': 'gzip, deflate, br',
@@ -27,13 +27,13 @@ class LagouSpider(CrawlSpider):
     }
 
     rules = (
-        Rule(LinkExtractor(allow=('zhaopin/.*',)),follow = True),
+        Rule(LinkExtractor(allow=('zhaopin/.*',)),follow = True),#跟踪符合规则的网址
         Rule(LinkExtractor(allow=('gongsi/j\d+.html',)), follow=True),
-        Rule(LinkExtractor(allow=r'jobs/\d+.html'), callback="parse_job",follow=True),
+        Rule(LinkExtractor(allow=r'jobs/\d+.html'), callback="parse_job",follow=True),#符合此规则的url交给parse——job处理
     )
     def parse_job(self, response):
         # 解析拉勾网的职位
-        item_loader = LagouJobItemLoader(item= LagouJobItem(),response = response)
+        item_loader = LagouJobItemLoader(item= LagouJobItem(),response = response)#itemloder传入item和response
         item_loader.add_css('title','.job-name::attr(title)')
         item_loader.add_value('url',response.url)
         item_loader.add_value('url_object_id',get_md5(response.url))
@@ -51,9 +51,9 @@ class LagouSpider(CrawlSpider):
         item_loader.add_css('company_url', '.job_company a::attr(href)')
         item_loader.add_value('crawl_time',datetime.now())
         a = item_loader
-        job_itme = item_loader.load_item()
+        job_item = item_loader.load_item()
 
-        return job_itme
+        return job_item
 
 
         # return item_loader.load_item()
