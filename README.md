@@ -166,6 +166,7 @@ class LagouMysqlTwistedPipline(object):
 * 使用scrapy-redis爬取拉勾，Windows为slave，linux为master。[点击下载](https://github.com/mrlyhao/lagou_redis)
 
 * 使用两种方法模拟登录微博 [点击查看](https://github.com/mrlyhao/lianxi/blob/master/%E5%BE%AE%E5%8D%9A%E6%A8%A1%E6%8B%9F%E7%99%BB%E5%BD%95.py)
+* 模拟登录后爬取移动端微博大V数据[点击查看](https://github.com/mrlyhao/lianxi/blob/master/%E7%88%AC%E5%8F%96%E5%BE%AE%E5%8D%9A%E4%B8%AA%E4%BA%BA%E9%A1%B5%E9%9D%A2.py)
 * 使用beautifulsoup 批量抓取MM照片 [点击查看](https://github.com/mrlyhao/lianxi/blob/master/mm%E7%85%A7%E7%89%87%E6%89%B9%E9%87%8F%E7%88%AC%E5%8F%96.py)
 * 采集后台数据，分析每本书的情况 [点击查看](https://github.com/mrlyhao/lianxi/blob/master/%E4%B9%A6%E4%B8%9B%E5%90%8E%E5%8F%B0%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86.py)
 * 采集京东数据并保存在表格中 [点击查看](https://github.com/mrlyhao/lianxi/blob/master/%E4%BA%AC%E4%B8%9C%E7%88%AC%E8%99%AB.py)和[pandas版本](https://github.com/mrlyhao/lianxi/blob/master/%E4%BA%AC%E4%B8%9C%E7%88%AC%E8%99%ABpandas.py)
