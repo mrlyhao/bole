@@ -177,6 +177,7 @@ class LagouMysqlTwistedPipline(object):
         insert_sql,params = item.get_insert_sql()
         cursor.execute(insert_sql, params)
 ```
+![](https://github.com/mrlyhao/bole/blob/master/bole/tools/%E6%8B%89%E5%8B%BE%E6%95%B0%E6%8D%AE%E6%88%AA%E5%9B%BE.jpg)
 
 # python文件合集
 
