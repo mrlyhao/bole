@@ -1,6 +1,26 @@
 # 使用scrapy采集拉勾的职位数据并保存在mysql中
 使用scrapy的crawlspider爬取拉勾的全站职位信息，提取后储存在mysql中。使用md5生成主键，并使用异步化接口储存。最终5小时爬取了17万条数据。
 
+## 在middlewares中设置随机的UA
+```
+class RandomUserAgentMiddlware(object):
+    # 随机更换user-agent
+    def __init__(self,crawler):
+        super(RandomUserAgentMiddlware,self).__init__()#super的作用是获取父类的初始方法，这里是获取一个类方法
+        self.ua = UserAgent()#这里是引进的一个随机UA的模块
+        self.ua_type = crawler.settings.get('RANDOM_UA_TYPE','random')
+
+    @classmethod
+    def from_crawler(cls,crawler):
+        return cls(crawler)#获取crawler，其中包括setting
+
+    def process_request(self,request,spider):
+        def get_ua():
+            return getattr(self.ua,self.ua_type)#getattr函数可以根据传递的后边参数的不同，获取前边函数的不同值方法，类似与'.'
+        random_ua = get_ua()
+        request.headers.setdefault('User_Agent',get_ua())
+```
+
 ## 设置提取规则
 ```
     name = 'lagou'
