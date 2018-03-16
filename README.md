@@ -2,7 +2,9 @@
 使用scrapy的crawlspider爬取拉勾的全站职位信息，提取后储存在mysql中。使用md5生成主键，并使用异步化接口储存。最终5小时爬取了17万条数据。
 
 ## 在middlewares中设置随机的UA
+先使用fake_useragent引入随机UA库，然后应用在settings中
 ```
+from fake_useragent import UserAgent
 class RandomUserAgentMiddlware(object):
     # 随机更换user-agent
     def __init__(self,crawler):
@@ -22,6 +24,7 @@ class RandomUserAgentMiddlware(object):
 ```
 
 ## 设置提取规则
+使用scrapy的crawlspider全站爬虫爬取拉勾网，设置好start_urls,和headers。并且禁用cookies,和现在间隔。然后设置爬取规则，并且将简历信息页交由parse_job处理。从而遍历所有的简历页面。
 ```
     name = 'lagou'
     allowed_domains = ['www.lagou.com']
@@ -38,7 +41,6 @@ class RandomUserAgentMiddlware(object):
             'Host': 'www.lagou.com',
             'Origin': 'https://www.lagou.com',
             'Referer': 'https://www.lagou.com/',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
         }
     }
 
@@ -48,7 +50,8 @@ class RandomUserAgentMiddlware(object):
         Rule(LinkExtractor(allow=r'jobs/\d+.html'), callback="parse_job",follow=True),#符合此规则的url交给parse——job处理
 ```
 
-## 设置item和mysql插入规则
+## 设置items和mysql插入规则
+在items中设置好需要采集的页面信息属性。并使用网址的md5作为主键。将部分信息的预处理在items中完成。并使用ItemLoader提取第一个信息。然后在mysql中建立相应的表和列，设置好插入代码。
 
 ```
 class LagouJobItem(scrapy.Item):
@@ -114,6 +117,7 @@ class LagouJobItemLoader(ItemLoader):
 ```
 
 ## 使用parse_job提取标签并在item中完成后续处理
+使用css和xpath提取页面标签信息，之后传入job_item中，并交给pipelines下载。
 ```
     def parse_job(self, response):
         # 解析拉勾网的职位
@@ -141,6 +145,7 @@ class LagouJobItemLoader(ItemLoader):
 ```
 
 ## 使用pipelines的异步化插件将数据保存在mysql中
+使用Twisted的异步化接口异步插入数据。并将settings中的登录信息传递进来。
 ```
 class LagouMysqlTwistedPipline(object):
     def __init__(self,dbpool):
