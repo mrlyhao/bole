@@ -6,7 +6,6 @@
 # http://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-import redis
 import datetime
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose,TakeFirst,Join
@@ -80,6 +79,26 @@ class LagouJobItem(scrapy.Item):
 
         return insert_sql, params
 
+class TianyanchaItem(object):
+    company = scrapy.Field()#公司名字
+    name = scrapy.Field() #法定代表人
+    status = scrapy.Field()#经营状态
+    registration_time = scrapy.Field()#注册时间
+    registered_capital = scrapy.Field()#注册资本
+    industry = scrapy.Field()#行业
+    company_type = scrapy.Field()#企业类型
+    business_number = scrapy.Field()#工商注册号
+    organization_code = scrapy.Field()#组织结构代码
+    credit_code = scrapy.Field()# 统一信用代码
+    identifier = scrapy.Field()#纳税人识别号
+    time_limit = scrapy.Field()#经营时限
+    approved_date = scrapy.Field()#核准日期
+    organ = scrapy.Field()#登记机关
+    add = scrapy.Field()#注册地址
+    range = scrapy.Field()#经营范围
+    partner = scrapy.Field()#股东信息
+
+    pass
 
 
 
